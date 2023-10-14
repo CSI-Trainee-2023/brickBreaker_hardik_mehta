@@ -66,7 +66,7 @@ function update(){
         ball.velocityX *= -1;
     }
     else if((ball.y + ball.height) >= boardheight){
-        
+        //game over
     }
 }
 function outofbound(xPosition){
