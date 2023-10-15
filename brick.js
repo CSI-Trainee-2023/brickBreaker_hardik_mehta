@@ -11,8 +11,8 @@ let playervelocityX = 10;
 //Breaker
 let ballwidth = 10;
 let ballheight = 10;
-let ballvelocityX = 3;
-let ballvelocityY = 2;
+let ballvelocityX = 5;
+let ballvelocityY = 3;
 
 let ball = {
     x:boardwidth/2,
@@ -53,7 +53,7 @@ function update(){
     //Breaker
     context.fillStyle = "white";
     ball.x += ball.velocityX;
-    ball.y += ballvelocityY;
+    ball.y += ball.velocityY;
     context.fillRect(ball.x, ball.y, ball.width, ball.height);
 
     //bounce
@@ -65,9 +65,14 @@ function update(){
         // if ball touches of left or right 
         ball.velocityX *= -1;
     }
-    else if((ball.y + ball.height) >= boardheight){
-        //game over
+    //bounce th ball of player
+    if(topCollision(ball,player)||bottemCollision(ball,player)){
+        ball.velocityY *= -1;
     }
+    else if(leftCollision(ball,player)||rightCollision(ball,player)){
+        ball.velocityX *= -1;
+    }
+    
 }
 function outofbound(xPosition){
     return(xPosition <0 || xPosition + playerwidth > boardwidth);
@@ -87,22 +92,22 @@ function movePlayer(e){
             player.x = nextplayerX;
         }
     }
+} 
+function detectcollision(a, b){
+    return a.x < b.x + b.width && 
+           a.x + a.width > b.x &&
+           a.y < b.y + b.height &&
+           a.y + a.height > b.y;
 }
-function detectcollision(a,b){
-    return a.x < b.x +b.width && 
-    a.x + a.width > b.x &&
-    a.y < b.y + b.height &&
-    a.y + a.height > b.y
-}
-function topCollision(ball,block){ //a is ball
-    return detectcollision(ball,block) && (ball.y + ball.height) >= block.y;
+function topCollision(ball, block){ 
+    return detectcollision(ball, block) && (ball.y + ball.height) >= block.y;
 }
 function bottemCollision(ball,block){
-    return detectcollision(ball,block) && (block.y + block.height) >= ball.y;
+    return detectcollision(ball, block) && (block.y + block.height) >= ball.y;
 }
 function leftCollision(ball,block){
-    return detectcollision(ball,block) && (ball.x + ball.width) >= block.x;
+    return detectcollision(ball, block) && (ball.x + ball.width) >= block.x;
 }
-function righttCollision(ball,block){
-    return detectcollision(ball,block) && (block.x + block.width) >= ball.x;
+function rightCollision(ball,block){
+    return detectcollision(ball, block) && (block.x + block.width) >= ball.x;
 }
