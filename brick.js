@@ -27,6 +27,7 @@ let blockX = 15;
 let blockY = 45;
 
 let score = 0;
+let gameover = false;
 
 let ball = {
     x:boardwidth/2,
@@ -61,6 +62,9 @@ window.onload = function(){
 }
 function update(){
     requestAnimationFrame(update);
+    if(gameover){
+        return;
+    }
     context.clearRect(0,0,board.width,board.height);
     //player
     context.fillStyle = "lightgreen";
@@ -80,6 +84,11 @@ function update(){
     else if(ball.x <= 0 || (ball.x + ball.width) >= boardwidth){
         // if ball touches of left or right 
         ball.velocityX *= -1;
+    }
+    else if(ball.y + ball.height >= boardheight){
+        context.font = "25px sans-serif"
+        context.fillText("Game Over : press 'Space' to Restart", 200, 300)
+        gameover = true;
     }
     //bounce th ball of player
     if(topCollision(ball,player)||bottemCollision(ball,player)){
@@ -117,6 +126,9 @@ function outofbound(xPosition){
     return(xPosition <0 || xPosition + playerwidth > boardwidth);
 }
 function movePlayer(e){
+    if(e.code == "Space"){
+        resetgame();
+    }
     if(e.code == "ArrowLeft"){
         //player.x -= player.velocityX;
         let nextplayerX = player.x - player.velocityX;
@@ -167,4 +179,26 @@ function createblocks(){
     }
     }
     blockcount = blockarray.length;
+}
+function resetgame(){
+    gameover = false;
+     player = {
+        x:boardwidth/2 -playerwidth/2,
+        y:boardheight-playerheight-5,
+        width : playerwidth,
+        height: playerheight,
+        velocityX : playervelocityX
+    }
+    ball = {
+        x:boardwidth/2,
+        y:boardheight/2,
+        height : ballheight,
+        width : ballwidth,
+        velocityX : ballvelocityX,
+        velocityY : ballvelocityY
+    }
+    blockarray= [];
+    score = 0;
+    createblocks();
+    
 }
