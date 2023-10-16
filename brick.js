@@ -31,7 +31,7 @@ let gameover = false;
 
 let ball = {
     x:boardwidth/2,
-    y:boardheight/2,
+    y: 575,
     height : ballheight,
     width : ballwidth,
     velocityX : ballvelocityX,
@@ -56,7 +56,6 @@ window.onload = function(){
 
     requestAnimationFrame(update);
     document.addEventListener("keydown",movePlayer);
-
     createblocks()
 
 }
@@ -87,7 +86,7 @@ function update(){
     }
     else if(ball.y + ball.height >= boardheight){
         context.font = "25px sans-serif"
-        context.fillText("Game Over : press 'Space' to Restart", 200, 300)
+        context.fillText("Game Over : Press 'Space' to Restart", 200, 300)
         gameover = true;
     }
     //bounce th ball of player
@@ -120,6 +119,7 @@ function update(){
     }
     context.font = "20px sans-serif"
     context.fillText(score, 10, 25)
+
     
 }
 function outofbound(xPosition){
@@ -191,7 +191,7 @@ function resetgame(){
     }
     ball = {
         x:boardwidth/2,
-        y:boardheight/2,
+        y:575,
         height : ballheight,
         width : ballwidth,
         velocityX : ballvelocityX,
