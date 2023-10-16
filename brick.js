@@ -11,7 +11,7 @@ let playervelocityX = 10;
 //Breaker
 let ballwidth = 10;
 let ballheight = 10;
-let ballvelocityX = 5;
+let ballvelocityX = 3;
 let ballvelocityY = 3;
 
 //block
@@ -26,6 +26,7 @@ let blockcount = 0;
 let blockX = 15;
 let blockY = 45;
 
+let score = 0;
 
 let ball = {
     x:boardwidth/2,
@@ -93,9 +94,23 @@ function update(){
     for(let i= 0;i<blockarray.length;i++){
         let block = blockarray[i];
         if(!block.break){
+            if(topCollision(ball,block)||bottemCollision(ball,block)){
+                block.break = true;
+                ball.velocityY *= -1;
+                blockcount -= 1 ;
+                score += 100;
+            }
+            else if(rightCollision(ball,block)||leftCollision(ball,block)){
+                block.break = true;
+                ball.velocityX *= -1;
+                blockcount -= 1 ;
+                score += 100;
+            }
             context.fillRect(block.x, block.y, block.width, block.height);
         }
     }
+    context.font = "20px sans-serif"
+    context.fillText(score, 10, 25)
     
 }
 function outofbound(xPosition){
