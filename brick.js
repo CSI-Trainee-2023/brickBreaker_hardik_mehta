@@ -27,6 +27,7 @@ let blockX = 15;
 let blockY = 45;
 
 let score = 0;
+let flag = 0;
 let gameover = false;
 
 let ball = {
@@ -34,8 +35,8 @@ let ball = {
     y: 575,
     height : ballheight,
     width : ballwidth,
-    velocityX : ballvelocityX,
-    velocityY : ballvelocityY
+    velocityX : 0,
+    velocityY : 0
 }
 
 let player = {
@@ -60,9 +61,14 @@ window.onload = function(){
 
 }
 function update(){
+    ballvelocityX = 3;
+     ballvelocityY = 3;
+
     requestAnimationFrame(update);
     if(gameover){
+        if(c>2){
         return;
+        }
     }
     context.clearRect(0,0,board.width,board.height);
     //player
@@ -87,6 +93,7 @@ function update(){
     else if(ball.y + ball.height >= boardheight){
         context.font = "25px sans-serif"
         context.fillText("Game Over : Press 'Space' to Restart", 200, 300)
+        context.fillStyle = "skyblue";
         gameover = true;
     }
     //bounce th ball of player
@@ -118,15 +125,17 @@ function update(){
         }
     }
     context.font = "20px sans-serif"
-    context.fillText(score, 10, 25)
-
-    
+    context.fillText(score, 10, 25)   
 }
 function outofbound(xPosition){
     return(xPosition <0 || xPosition + playerwidth > boardwidth);
 }
 function movePlayer(e){
-    if(e.code == "Space"){
+    if(e.code == "Enter" && flag == 0){
+        resetgame();
+        flag = 1 ;
+    }
+    if(e.code == "Space" && flag == 1){
         resetgame();
     }
     if(e.code == "ArrowLeft"){
@@ -201,4 +210,8 @@ function resetgame(){
     score = 0;
     createblocks();
     
+}
+function startgame(){
+    ball.x += ball.velocityX;
+    ball.y += ball.velocityY;   
 }
