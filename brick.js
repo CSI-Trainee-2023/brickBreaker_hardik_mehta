@@ -28,6 +28,7 @@ let blockY = 45;
 
 let score = 0;
 let flag = 0;
+let click = 0;
 let chanccount = 0;
 let gameover = false;
 
@@ -115,18 +116,21 @@ function update(){
                 ball.velocityY *= -1;
                 blockcount -= 1 ;
                 score += 100;
+                localStorage.setItem("highscore",score)               
             }
             else if(rightCollision(ball,block)||leftCollision(ball,block)){
                 block.break = true;
                 ball.velocityX *= -1;
                 blockcount -= 1 ;
                 score += 100;
+                localStorage.setItem("highscore",score)  
             }
             context.fillRect(block.x, block.y, block.width, block.height);
         }
     
-    context.font = "20px sans-serif"
-    context.fillText(score, 10, 25)   
+    context.font = "20px Arial"
+    context.fillText(score, 80, 25) 
+    context.fillText("Score :", 10, 25)
 }
 }
 function outofbound(xPosition){
@@ -137,19 +141,20 @@ function movePlayer(e){
     if(e.code == "Enter" && flag == 0){
         resetgame();
         flag = 1 ;
+        click = 1;
     }
     if(e.code == "Space" && flag == 1){
         resetgame();
     }
-    if(e.code == "ArrowLeft"){
+    if(e.code == "ArrowLeft" && click == 1){
         //player.x -= player.velocityX;
         let nextplayerX = player.x - player.velocityX;
         if(!outofbound(nextplayerX)){
             player.x = nextplayerX;
         }
     }
-    else if (e.code == "ArrowRight"){
-       // player.x += player.velocityX;
+    else if (e.code == "ArrowRight" && click == 1){
+       // player.x += player.velocityX
        let nextplayerX = player.x + player.velocityX;
         if(!outofbound(nextplayerX)){
             player.x = nextplayerX;
@@ -214,8 +219,4 @@ function resetgame(){
     score = 0;
     createblocks();
     
-}
-function startgame(){
-    ball.x += ball.velocityX;
-    ball.y += ball.velocityY;   
 }
