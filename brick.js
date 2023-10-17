@@ -28,6 +28,7 @@ let blockY = 45;
 
 let score = 0;
 let flag = 0;
+let chanccount = 0;
 let gameover = false;
 
 let ball = {
@@ -62,13 +63,10 @@ window.onload = function(){
 }
 function update(){
     ballvelocityX = 3;
-     ballvelocityY = 3;
-
+    ballvelocityY = 3;
     requestAnimationFrame(update);
     if(gameover){
-        if(c>2){
         return;
-        }
     }
     context.clearRect(0,0,board.width,board.height);
     //player
@@ -90,12 +88,15 @@ function update(){
         // if ball touches of left or right 
         ball.velocityX *= -1;
     }
-    else if(ball.y + ball.height >= boardheight){
+
+     else if(ball.y + ball.height >= boardheight){
         context.font = "25px sans-serif"
-        context.fillText("Game Over : Press 'Space' to Restart", 200, 300)
-        context.fillStyle = "skyblue";
+        context.fillText("Game Over:Press 'Space' to restart",200,300)
+        context.fillStyle = "styblue";
         gameover = true;
-    }
+
+     }
+        
     //bounce th ball of player
     if(topCollision(ball,player)||bottemCollision(ball,player)){
         ball.velocityY *= -1;
@@ -123,13 +124,15 @@ function update(){
             }
             context.fillRect(block.x, block.y, block.width, block.height);
         }
-    }
+    
     context.font = "20px sans-serif"
     context.fillText(score, 10, 25)   
+}
 }
 function outofbound(xPosition){
     return(xPosition <0 || xPosition + playerwidth > boardwidth);
 }
+
 function movePlayer(e){
     if(e.code == "Enter" && flag == 0){
         resetgame();
@@ -153,6 +156,7 @@ function movePlayer(e){
         }
     }
 } 
+
 function detectcollision(a, b){
     return a.x < b.x + b.width && 
            a.x + a.width > b.x &&
